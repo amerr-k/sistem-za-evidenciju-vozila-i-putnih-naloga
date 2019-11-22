@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using sistem_za_evidenciju_vozila_i_putnih_naloga.Models;
+using sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models;
 
 namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
 {
