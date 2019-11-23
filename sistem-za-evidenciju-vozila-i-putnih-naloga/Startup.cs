@@ -30,6 +30,8 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga
                  x.UseSqlServer(Configuration.GetConnectionString("localDB"))
                 );
             services.AddScoped<ICarsService, CarsService>();
+            services.AddScoped<ITravelWarrantService, TravelWarrantService>();
+            
             services.AddControllersWithViews();
         }
 
