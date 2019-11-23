@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create" asp-controller="Cars">Create New</a>
 </p>
-<table class="table">
+<table id="example" class="table">
     <thead>
         <tr>
             <th>
@@ -37,35 +37,54 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarModel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChassisNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EngineNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EnginPowerKS)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EnginPowerKW)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fuel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductionYear)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarModel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChassisNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EngineNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnginPowerKS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnginPowerKW)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fuel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductionYear)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdf', 'excel'
+                ],
+                searching: false
+
+            });
+            //$.extend($.fn.dataTable.defaults, {
+            //    searching: false,
+            //    ordering: false
+            //});
+        })
+    </script>
+}
