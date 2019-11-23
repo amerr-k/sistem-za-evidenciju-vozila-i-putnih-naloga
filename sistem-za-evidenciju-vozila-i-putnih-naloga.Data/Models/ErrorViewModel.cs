@@ -1,6 +1,6 @@
 using System;
 
-namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Models
+namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models
 {
     public class ErrorViewModel
     {

@@ -1,0 +1,65 @@
+﻿@model sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels.TWSearchVM
+
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Search</h1>
+@*<div>
+    <div class="col-md-4">
+        <form asp-action="SearchResults" asp-controller="TravelWarrants" method="post">
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="@Model.CarId" class="control-label"></label>
+                    <select asp-for="@Model.CarId" class="form-control" asp-items="@Model.carList"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.StartDate" class="control-label"></label>
+                    <input type="date" asp-for="@Model.StartDate" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.EndDate" class="control-label"></label>
+                    <input type="date" asp-for="@Model.EndDate" class="form-control">
+                </div>
+                <div>
+                    <button type="submit"> Pretrazi </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>*@
+
+
+<form asp-action="SearchResults" asp-controller="TravelWarrants" method="get">
+    <div class="form-row">
+        <div class="col">
+            <label asp-for="@Model.CarId" class="control-label"></label>
+
+        </div>
+        <div class="col">
+            <label asp-for="@Model.SearchStartDate" class="control-label"></label>
+        </div>
+        <div class="col">
+            <label asp-for="@Model.SearchEndDate" class="control-label"></label>
+        </div>
+        <div class="col">
+            
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+           <select asp-for="@Model.CarId" class="form-control" asp-items="@Model.carList"></select>
+        </div>
+        <div class="col">
+            <input type="date" asp-for="@Model.SearchStartDate" class="form-control" placeholder="Start date ..." />
+        </div>
+        <div class="col">
+            <input type="date" asp-for="@Model.SearchEndDate" class="form-control">
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-outline-primary"> Pretrazi </button>
+        </div>
+    </div>
+</form>

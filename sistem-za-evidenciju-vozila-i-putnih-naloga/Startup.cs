@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using sistem_za_evidenciju_vozila_i_putnih_naloga.Data;
+using sistem_za_evidenciju_vozila_i_putnih_naloga.Services;
 
 namespace sistem_za_evidenciju_vozila_i_putnih_naloga
 {
@@ -23,6 +26,12 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<SEVPNContext>(x =>
+                 x.UseSqlServer(Configuration.GetConnectionString("localDB"))
+                );
+            services.AddScoped<ICarsService, CarsService>();
+            services.AddScoped<ITravelWarrantService, TravelWarrantService>();
+            
             services.AddControllersWithViews();
         }
 
