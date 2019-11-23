@@ -6,7 +6,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Data
 {
     public class SEVPNContext : DbContext
     {
-        public SEVPNContext() : base()
+        private SEVPNContext() : base()
         {
 
         }
@@ -51,6 +51,8 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Data
         public DbSet<Car> Car { get; set; }
         public DbSet<CarModel> CarModel { get; set; }
         public DbSet<CarBrand> CarBrand { get; set; }
+        public DbSet<Driver> Driver { get; set; }
+        public DbSet<TravelWarrant> TravelWarrant { get; set; }
 
     }
 }
