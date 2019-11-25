@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data;
+using sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Services;
+
 
 namespace sistem_za_evidenciju_vozila_i_putnih_naloga
 {
@@ -32,6 +34,9 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga
             services.AddScoped<ICarsService, CarsService>();
             services.AddScoped<ITravelWarrantService, TravelWarrantService>();
             
+            //services.AddScoped<IValidationDictionary, ModelStateWrapper>();
+            //services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
             services.AddControllersWithViews();
         }
 
@@ -50,7 +55,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();

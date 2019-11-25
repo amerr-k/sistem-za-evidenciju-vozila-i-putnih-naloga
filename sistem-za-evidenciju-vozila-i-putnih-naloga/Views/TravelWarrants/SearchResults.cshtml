@@ -1,15 +1,7 @@
 ﻿@model IEnumerable<sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels.TWSearchResultsVM>
 
-@{
-    ViewData["Title"] = "SearchResults";
-}
 
-<h1>SearchResults</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table id="report-table" class="table">
     <thead>
         <tr>
             <th>
@@ -33,28 +25,50 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TravelWarrantId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfPassengers)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TravelWarrantId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfPassengers)
+                </td>
 
-        </tr>
-}
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            console.log("3");
+
+            $('#report-table').DataTable({
+                "dom": 'Bfrtip',
+                "buttons": [
+                    'pdf', 'excel'
+                ],
+                "searching": false,
+                "paging": false,
+                "ordering": false,
+                "info": false
+            });
+            console.log("4");
+        });
+
+    </script>
+}

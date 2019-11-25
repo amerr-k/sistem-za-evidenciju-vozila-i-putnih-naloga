@@ -16,5 +16,6 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
         TWEditVM getTravelWarrantEditDetails(int travelWarrantId);
         TWSearchVM getTWSearchVM();
         List<TWSearchResultsVM> getTWSearchResultsVM(TWSearchVM model);
+        bool editTravelWarrant(TWEditVM model);
     }
 }

@@ -7,32 +7,32 @@
 
 <h1>Search</h1>
 @*<div>
-    <div class="col-md-4">
-        <form asp-action="SearchResults" asp-controller="TravelWarrants" method="post">
-            <div class="form-row">
-                <div class="form-group">
-                    <label asp-for="@Model.CarId" class="control-label"></label>
-                    <select asp-for="@Model.CarId" class="form-control" asp-items="@Model.carList"></select>
+        <div class="col-md-4">
+            <form asp-action="SearchResults" asp-controller="TravelWarrants" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="@Model.CarId" class="control-label"></label>
+                        <select asp-for="@Model.CarId" class="form-control" asp-items="@Model.carList"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.StartDate" class="control-label"></label>
+                        <input type="date" asp-for="@Model.StartDate" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.EndDate" class="control-label"></label>
+                        <input type="date" asp-for="@Model.EndDate" class="form-control">
+                    </div>
+                    <div>
+                        <button type="submit"> Pretrazi </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="@Model.StartDate" class="control-label"></label>
-                    <input type="date" asp-for="@Model.StartDate" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.EndDate" class="control-label"></label>
-                    <input type="date" asp-for="@Model.EndDate" class="form-control">
-                </div>
-                <div>
-                    <button type="submit"> Pretrazi </button>
-                </div>
-            </div>
 
-        </form>
-    </div>
-</div>*@
+            </form>
+        </div>
+    </div>*@
 
 
-<form asp-action="SearchResults" asp-controller="TravelWarrants" method="get">
+<form asp-call="yes" ajax-placeholder="report-placeholder" action="SearchResults" method="post">
     <div class="form-row">
         <div class="col">
             <label asp-for="@Model.CarId" class="control-label"></label>
@@ -45,15 +45,15 @@
             <label asp-for="@Model.SearchEndDate" class="control-label"></label>
         </div>
         <div class="col">
-            
+
         </div>
     </div>
     <div class="form-row">
         <div class="col">
-           <select asp-for="@Model.CarId" class="form-control" asp-items="@Model.carList"></select>
+            <select asp-for="@Model.CarId" class="form-control" asp-items="@Model.carList"></select>
         </div>
         <div class="col">
-            <input type="date" asp-for="@Model.SearchStartDate" class="form-control" placeholder="Start date ..." />
+            <input type="date" asp-for="@Model.SearchStartDate" class="form-control" />
         </div>
         <div class="col">
             <input type="date" asp-for="@Model.SearchEndDate" class="form-control">
@@ -63,3 +63,56 @@
         </div>
     </div>
 </form>
+<br />
+<div id="report-placeholder">
+
+</div>
+
+@section Scripts{
+    <script>
+        //$(document).ready(function () {
+        //    $('.datepicker').datepicker({
+        //        dateFormat: 'yyyy-MM-dd',
+        //        uiLibrary: 'bootstrap4'
+        //    });
+        //})
+
+        $(document).ready(function () {
+            $("form[asp-call='yes']").submit(function (event) {
+                event.preventDefault();
+                console.log(this);
+                var url = $(this).attr("action");
+                console.log(url);
+                var placeholder = $(this).attr("ajax-placeholder");
+                //$.get(url, function (data, status) {
+                //    $("#report-placeholder").html(data);
+                //});
+                var form = $(this);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function (data) {
+                        $("#" + placeholder).html(data);
+                        $('#report-table').DataTable({
+                            "dom": 'Bfrtip',
+                            "buttons": [
+                                'pdf', 'excel'
+                            ],
+                            "searching": false,
+                            "paging": false,
+                            "ordering": false,
+                            "info": false
+                        });
+                    }
+                });
+
+
+
+            })
+
+
+
+        });
+    </script>
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models;
@@ -11,12 +12,27 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
 {
     public class TravelWarrantService : ITravelWarrantService
     {
+
         private readonly SEVPNContext context;
+
 
         public TravelWarrantService(SEVPNContext context)
         {
             this.context = context;
+
         }
+
+        //protected bool ValidateProduct(TWEditVM modelToValidate)
+        //{
+        //    TravelWarrant travelWarrant = context.TravelWarrant.Find(modelToValidate.TravelWarrantId);
+        //    if(modelToValidate.Status.ToString() == "Completed" 
+        //        && travelWarrant.Status.ToString() == "Recorded")
+        //    {
+        //        validationDictionary.AddError("Status", "Cannot be completed");
+        //    }
+        //    return validationDictionary.IsValid;
+        //}
+
         public int createTravelWarrant(TWCreateVM model)
         {
             TravelWarrant travelWarrant = new TravelWarrant
@@ -40,18 +56,38 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
             throw new NotImplementedException();
         }
 
+        public bool editTravelWarrant(TWEditVM model)
+        {
+            //if (!ValidateProduct(model))
+            //    return false;
+
+            // Database logic
+            try
+            {
+                TravelWarrant travelWarrant = context.TravelWarrant.Find(model.TravelWarrantId);
+
+                travelWarrant.Status = model.Status;
+                context.SaveChanges();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
         public List<TWIndexVM> getAllTravelWarrants()
         {
             List<TWIndexVM> listModels = context.TravelWarrant.Select(x => new TWIndexVM
             {
                 TravelWarrantId = x.TravelWarrantId,
                 StartEndLocation = x.StartLocation + " - " + x.EndLocation,
-                Car =  x.Car.CarModel.CarBrand.Name + " " + 
-                                x.Car.CarModel.Name + " | " + 
+                Car = x.Car.CarModel.CarBrand.Name + " " +
+                                x.Car.CarModel.Name + " | " +
                                 x.Car.ChassisNumber,
-                StartEndTime = x.StartTime.ToShortDateString() + " " + 
-                               x.StartTime.ToShortTimeString() + " - " + 
-                               x.EndTime.ToShortDateString() + " " + 
+                StartEndTime = x.StartTime.ToShortDateString() + " " +
+                               x.StartTime.ToShortTimeString() + " - " +
+                               x.EndTime.ToShortDateString() + " " +
                                x.EndTime.ToShortTimeString(),
                 Status = x.Status.ToString()
             }).ToList();
@@ -60,14 +96,15 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
 
         public TWDetailsVM getTravelWarrantDetails(int travelWarrantId)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public TWEditVM getTravelWarrantEditDetails(int travelWarrantId)
         {
             TWEditVM model = context.TravelWarrant
                 .Where(x => x.TravelWarrantId == travelWarrantId)
-                .Select(x => new TWEditVM { 
+                .Select(x => new TWEditVM
+                {
                     TravelWarrantId = x.TravelWarrantId,
                     StartLocation = x.StartLocation,
                     EndLocation = x.EndLocation,
@@ -78,16 +115,28 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
                                x.StartTime.ToShortTimeString(),
                     EndTime = x.EndTime.ToShortDateString() + " " +
                                x.EndTime.ToShortTimeString(),
-                    Status = x.Status
+                    Status = x.Status,
+                    Driver = x.Driver.FirstName + " " + x.Driver.Surname
                 }).SingleOrDefault();
             return model;
         }
 
         public List<TWSearchResultsVM> getTWSearchResultsVM(TWSearchVM model)
         {
-            List<TWSearchResultsVM> modelList = context.TravelWarrant
-                .Where(x => x.CarId == model.CarId)
-                .Where(x => x.StartTime >= model.SearchStartDate && x.StartTime <= model.SearchEndDate)
+            IQueryable<TravelWarrant> listQueryable = null;
+            if (model.CarId == 0)
+            {
+                listQueryable = context.TravelWarrant
+                    .Where(x => x.StartTime >= model.SearchStartDate && x.StartTime <= model.SearchEndDate);
+
+            }
+            else if (model.CarId != 0)
+            {
+                listQueryable = context.TravelWarrant
+                   .Where(x => x.CarId == model.CarId)
+                   .Where(x => x.StartTime >= model.SearchStartDate && x.StartTime <= model.SearchEndDate);
+            }
+            List<TWSearchResultsVM> modelList = listQueryable
                 .Select(x => new TWSearchResultsVM
                 {
                     TravelWarrantId = x.TravelWarrantId,
@@ -112,9 +161,10 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
                     Text = x.CarModel.CarBrand.Name + " " +
                                 x.CarModel.Name + " | " +
                                 x.ChassisNumber
-                }).ToList(),                
+                }).ToList(),
                 SearchEndDate = DateTime.Now,
                 SearchStartDate = DateTime.Now
+
             };
             model.carList.Add(new SelectListItem { Value = "0", Text = "None" });
             return model;

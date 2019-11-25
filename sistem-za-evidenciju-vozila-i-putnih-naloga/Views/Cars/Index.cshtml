@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create" asp-controller="Cars">Create New</a>
 </p>
-<table id="example" class="table">
+<table id="car-table-id" class="table table-bordered">
     <thead>
         <tr>
             <th>
@@ -72,19 +72,19 @@
 </table>
 @section Scripts{
     <script>
-        $(document).ready(function () {
-            $('#example').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'pdf', 'excel'
-                ],
-                searching: false
 
-            });
-            //$.extend($.fn.dataTable.defaults, {
-            //    searching: false,
-            //    ordering: false
-            //});
-        })
+            //$(document).ready(function () {
+            //    $('#car-table-id').DataTable({
+            //        dom: 'Bfrtip',
+            //        buttons: [],
+            //        "searching": false,
+            //        "paging": false,
+                    
+            //    });
+                //$.extend($.fn.dataTable.defaults, {
+                //    searching: false,
+                //    ordering: false
+                //});
+            //})
     </script>
 }
