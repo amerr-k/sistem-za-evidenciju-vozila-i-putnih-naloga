@@ -9,9 +9,12 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="travel-warrant-table-id"class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TravelWarrantId)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Car)
             </th>
@@ -28,24 +31,40 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Car)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartEndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartEndLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-controller="TravelWarrants" asp-route-id="@item.TravelWarrantId">Akcija</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TravelWarrantId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartEndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartEndLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-controller="TravelWarrants" asp-route-id="@item.TravelWarrantId">Akcija</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@section Scripts {
+    @*<script>
+        $(document).ready(function () {
+            $('#travel-warrant-table-id').DataTable({
+                dom: 'Bfrtip',
+                buttons: [],
+                "searching": false,
+                "paging": false,
+
+            });
+    </script>*@
+}

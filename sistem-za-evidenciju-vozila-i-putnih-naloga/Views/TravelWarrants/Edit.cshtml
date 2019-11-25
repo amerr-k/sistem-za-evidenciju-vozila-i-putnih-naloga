@@ -1,6 +1,7 @@
 ﻿@model sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels.TWEditVM
 
 @{
+    var message = (string)TempData["message"];
     ViewData["Title"] = "Edit";
 }
 
@@ -8,9 +9,18 @@
 
 <h4>TravelWarrant</h4>
 <hr />
+@if (message != null)
+{
+    <div id="messageAlertId" class="alert alert-danger collapse">
+        <a id="closeLinkId" href="#" class="close">&times;</a>
+        <strong></strong> @message
+    </div>
+
+}
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TravelWarrantId" />
             <div class="form-group">
                 <label asp-for="Car" class="control-label"></label>
@@ -18,7 +28,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Driver" class="control-label"></label>
-                <select asp-for="Driver" class="form-control" readonly></select>
+                <input asp-for="Driver" class="form-control" readonly>
             </div>
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
@@ -30,19 +40,31 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartLocation" class="control-label"></label>
-                <input asp-for="StartLocation" class="form-control" readonly />
+                <input asp-for="StartLocation" class="form-control" />
+                <span asp-validation-for="@Model.StartLocation" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <label asp-for="EndLocation" class="control-label"></label>
-                <input asp-for="EndLocation" class="form-control" readonly />
+                <input asp-for="EndLocation" class="form-control" />
+                <span asp-validation-for="@Model.EndLocation" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfPassengers" class="control-label"></label>
-                <input asp-for="NumberOfPassengers" class="form-control" readonly/>
+                <input asp-for="NumberOfPassengers" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control" asp-items="@Html.GetEnumSelectList<Status>()"></select>
+                @if (Model.Status.ToString() == "Denied" || Model.Status.ToString() == "Completed")
+                {
+                    <input readonly asp-for="Status" class="form-control">
+                }
+                else
+                {
+                    <select asp-for="Status" class="form-control" asp-items="@Html.GetEnumSelectList<Status>()"></select>
+                }
+
             </div>
 
             <div class="form-group">
@@ -58,4 +80,18 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $("#messageAlertId").show('fade');
+            setTimeout(function () {
+                $("#messageAlertId").hide('fade')
+            }, 5000);
+            $("#closeLinkId").click(function () {
+                $("#messageAlertId").hide('fade');
+            })
+        });
+
+
+    </script>
 }

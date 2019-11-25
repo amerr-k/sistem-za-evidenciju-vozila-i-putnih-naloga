@@ -17,7 +17,7 @@
     },
     "sistem_za_evidenciju_vozila_i_putnih_naloga": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
