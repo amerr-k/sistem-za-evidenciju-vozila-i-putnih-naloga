@@ -1,0 +1,15 @@
+﻿@model int
+@{
+    ViewData["Title"] = "404 Error";
+}
+
+<div class="alert alert-danger mt-3 mb-3">
+    <h2>404 Car not found</h2>
+    <hr />
+    <h3>
+        Car with ID = @Model not found!
+    </h3>
+</div>
+<a asp-action="Index" asp-controller="Cars" class="btn btn-outline-info">
+    Pogledaj listu automobila
+</a>

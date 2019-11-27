@@ -10,7 +10,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
     {
         List<TWIndexVM> getAllTravelWarrants();
         TWCreateVM prepareTWCreateVM();
-        int createTravelWarrant(TWCreateVM model);
+        bool createTravelWarrant(TWCreateVM model);
         int deleteTravelWarrant(int travelWarrantId);
         TWDetailsVM getTravelWarrantDetails(int travelWarrantId);
         TWEditVM getTravelWarrantEditDetails(int travelWarrantId);

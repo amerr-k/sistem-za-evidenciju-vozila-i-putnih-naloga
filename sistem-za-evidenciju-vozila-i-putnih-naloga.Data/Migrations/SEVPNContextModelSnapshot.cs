@@ -32,11 +32,11 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Migrations
                     b.Property<string>("ChassisNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("EnginPowerKS")
-                        .HasColumnType("float");
+                    b.Property<float>("EnginPowerKS")
+                        .HasColumnType("real");
 
-                    b.Property<double>("EnginPowerKW")
-                        .HasColumnType("float");
+                    b.Property<float>("EnginPowerKW")
+                        .HasColumnType("real");
 
                     b.Property<string>("EngineNumber")
                         .HasColumnType("nvarchar(max)");
@@ -44,7 +44,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Migrations
                     b.Property<int>("Fuel")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductionYear")
+                    b.Property<int?>("ProductionYear")
                         .HasColumnType("int");
 
                     b.HasKey("CarId");

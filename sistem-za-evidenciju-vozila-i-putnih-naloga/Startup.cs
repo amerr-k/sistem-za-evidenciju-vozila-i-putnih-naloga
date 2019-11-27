@@ -49,9 +49,11 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
+
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();

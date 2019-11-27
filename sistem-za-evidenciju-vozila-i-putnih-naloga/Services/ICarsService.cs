@@ -10,10 +10,12 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
     public interface ICarsService
     {
         List<CarsIndexVM> getAllCars();
-        CarsCreateUpdateVM prepareCarsCreateVM();
+        CarsCreateUpdateVM PrepareDataForCreateCars();
         int createCar(CarsCreateUpdateVM model);
-        int deleteCar(int carId);
+        bool deleteCar(int carId);
         CarsDetailsVM getCarDetails(int id);
         CarsCreateUpdateVM getCarUpdateDetails(int id);
+        CarsCreateCarModelVM PrepareDataForCreateCarType();
+        bool CreateCarType(CarsCreateCarModelVM model);
     }
 }
