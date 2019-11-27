@@ -1,0 +1,15 @@
+﻿@model int
+@{
+    ViewData["Title"] = "404 Error";
+}
+
+<div class="alert alert-danger mt-3 mb-3">
+    <h2>404 Travel Warrant not found</h2>
+    <hr />
+    <h3>
+        Travel Warrant with ID = @Model not found!
+    </h3>
+</div>
+<a asp-action="Index" asp-controller="TravelWarrants" class="btn btn-outline-info">
+    Pogledaj listu putnih naloga
+</a>
