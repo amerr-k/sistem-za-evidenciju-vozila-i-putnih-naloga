@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "Not Found";
+    var errorMessage = ViewData["ErrorMessage"];
+}
+
+
+<h1>@errorMessage</h1>
+
+<a asp-action="Index" asp-controller="Home" class="btn btn-outline-info">
+    Vrati se na početnu stranicu
+</a>
+
