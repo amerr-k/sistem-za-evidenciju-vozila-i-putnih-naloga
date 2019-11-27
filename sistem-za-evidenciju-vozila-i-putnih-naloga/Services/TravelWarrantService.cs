@@ -33,7 +33,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
         //    return validationDictionary.IsValid;
         //}
 
-        public int createTravelWarrant(TWCreateVM model)
+        public bool createTravelWarrant(TWCreateVM model)
         {
             TravelWarrant travelWarrant = new TravelWarrant
             {
@@ -44,11 +44,26 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
                 NumberOfPassengers = model.NumberOfPassengers,
-                Status = model.Status,
+                Status = Status.Recorded,
             };
+
+            foreach (var item in context.TravelWarrant)
+            {
+                if(item.CarId == travelWarrant.CarId &&
+                    (item.Status.ToString() == "Recorded" ||
+                    item.Status.ToString() == "Confirmed") &&
+                    (travelWarrant.StartTime >= item.StartTime &&
+                    travelWarrant.StartTime <= item.EndTime) ||
+                    (travelWarrant.EndTime >= item.StartTime &&
+                    travelWarrant.EndTime <= item.EndTime)
+                    )               
+                {
+                    return false;
+                }
+            }
             context.TravelWarrant.Add(travelWarrant);
             context.SaveChanges();
-            return travelWarrant.CarId;
+            return true;
         }
 
         public int deleteTravelWarrant(int travelWarrantId)

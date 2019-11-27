@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -34,8 +35,8 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
             car.CarModelId = model.CarModelId;
             car.ChassisNumber = model.ChassisNumber;
             car.EngineNumber = model.EngineNumber;
-            car.EnginPowerKS = model.EnginPowerKS;
-            car.EnginPowerKW = model.EnginPowerKW;
+            car.EnginPowerKS = float.Parse(model.EnginPowerKS);
+            car.EnginPowerKW = float.Parse(model.EnginPowerKW);
             car.Fuel = model.Fuel;
             car.ProductionYear = model.ProductionYear;
 
@@ -43,13 +44,28 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
             return car.CarId;
         }
 
-        public int deleteCar(int carId)
+        public bool CreateCarType(CarsCreateCarModelVM model)
+        {
+            CarModel carModel = new CarModel
+            {
+                Name = model.Name,
+                CarBrandId = model.CarBrandId
+            };
+            context.CarModel.Add(carModel);
+            context.SaveChanges();
+            return true;
+        }
+
+        public bool deleteCar(int carId)
         {
             Car car = context.Car.Find(carId);
-            int deletedId = car.CarId;
+            if(car == null)
+            {
+                return false;
+            }
             context.Remove(car);
             context.SaveChanges();
-            return deletedId;
+            return true;
         }
 
         public List<CarsIndexVM> getAllCars()
@@ -60,8 +76,8 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
                 CarModel = x.CarModel.CarBrand.Name + " " + x.CarModel.Name,
                 ChassisNumber = x.ChassisNumber,
                 EngineNumber = x.EngineNumber,
-                EnginPowerKS = x.EnginPowerKS,
-                EnginPowerKW = x.EnginPowerKW,
+                EnginPowerKS = x.EnginPowerKS.ToString(),
+                EnginPowerKW = x.EnginPowerKW.ToString(),
                 Fuel = x.Fuel.ToString(),
                 ProductionYear = x.ProductionYear
             }).ToList();
@@ -95,8 +111,8 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
                     CarModel = x.CarModel.Name + " " + x.CarModel.CarBrand.Name,
                     ChassisNumber = x.ChassisNumber,
                     EngineNumber = x.EngineNumber,
-                    EnginPowerKS = x.EnginPowerKS,
-                    EnginPowerKW = x.EnginPowerKW,
+                    EnginPowerKS = x.EnginPowerKS.ToString(),
+                    EnginPowerKW = x.EnginPowerKW.ToString(),
                     Fuel = x.Fuel,
                     ProductionYear = x.ProductionYear,
                     listCarModels = context.CarModel.Select(x => new SelectListItem
@@ -108,7 +124,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
             return model;
         }
 
-        public CarsCreateUpdateVM prepareCarsCreateVM()
+        public CarsCreateUpdateVM PrepareDataForCreateCars()
         {
             CarsCreateUpdateVM model = new CarsCreateUpdateVM
             {
@@ -123,6 +139,19 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
                 //    Text = x.ToString(),
                 //    Value = ((int)x).ToString()
                 //}).ToList()
+            };
+            return model;
+        }
+
+        public CarsCreateCarModelVM PrepareDataForCreateCarType()
+        {
+            CarsCreateCarModelVM model = new CarsCreateCarModelVM
+            {
+                carBrandsList = context.CarBrand.Select(x => new SelectListItem
+                {
+                    Value = x.CarBrandId.ToString(),
+                    Text = x.Name
+                }).ToList()
             };
             return model;
         }
