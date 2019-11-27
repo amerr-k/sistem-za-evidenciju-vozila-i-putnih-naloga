@@ -1,6 +1,7 @@
 ﻿@model sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels.TWCreateVM
 
 @{
+    var message = (string)TempData["message"];
     ViewData["Title"] = "Create";
 }
 
@@ -8,17 +9,27 @@
 
 <h4>TravelWarrant</h4>
 <hr />
+
+@if (message != null)
+{
+    <div id="messageCreateAlertId" class="alert alert-danger collapse">
+        <a id="closeCreateLinkId" href="#" class="close">&times;</a>
+        <strong></strong> @message
+    </div>
+
+}
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="@Model.CarId" class="control-label"></label>
-                <select asp-for="@Model.CarId" class ="form-control" asp-items="@Model.carList"></select>
+                <select asp-for="@Model.CarId" class="form-control" asp-items="@Model.carList"></select>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.DriverId" class="control-label"></label>
-                <select asp-for="@Model.DriverId" class ="form-control" asp-items="@Model.driverList"></select>
+                <select asp-for="@Model.DriverId" class="form-control" asp-items="@Model.driverList"></select>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.StartTime" class="control-label"></label>
@@ -58,4 +69,18 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $("#messageCreateAlertId").show('fade');
+            setTimeout(function () {
+                $("#messageCreateAlertId").hide('fade')
+            }, 5000);
+            $("#closeCreateLinkId").click(function () {
+                $("#messageCreateAlertId").hide('fade');
+            })
+        });
+
+
+    </script>
 }

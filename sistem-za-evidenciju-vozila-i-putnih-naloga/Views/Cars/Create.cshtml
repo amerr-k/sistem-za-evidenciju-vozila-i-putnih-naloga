@@ -9,13 +9,49 @@
 <h4>Car</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" asp-controller="Cars" method="post">
+    <div class="col-md-6">
+        <form asp-action="Create" asp-controller="Cars" method="post" autocomplete="off">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="@Model.CarModelId" class="control-label"></label>
-                <select asp-for="@Model.CarModelId" class="form-control" asp-items="@Model.listCarModels">
-                </select>
+
+            @*<div class="form-row align-items-center">
+
+                    <div class="form-group">
+                        <div class="col-auto">
+                            <label asp-for="@Model.CarModelId" class="control-label"></label>
+                            <select asp-for="@Model.CarModelId" class="form-control" asp-items="@Model.listCarModels"></select>
+
+                            <span asp-validation-for="@Model.CarModelId" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-success"> Kreiraj novi tip automobila </button>
+                    </div>
+
+                </div>*@
+
+
+            <div class="form-row align-items-center form-group">
+                <div class="col-auto">
+                    <label class="control-label" asp-for="@Model.CarModelId"></label>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" asp-for="@Model.CarModelId">Name</label>
+                    <select asp-for="@Model.CarModelId" class="form-control" asp-items="@Model.listCarModels"></select>
+                    <span asp-validation-for="@Model.CarModelId" class="text-danger"></span>
+                </div>
+
+                <div class="col-auto">
+                    <a class="btn btn-success" asp-action="CreateCarType" asp-controller="Cars"> Kreiraj novi tip automobila </a>
+                </div>
+            </div>
+
+
+
+            <div class="form-group" hidden>
+                <label asp-for="@Model.listCarModels" class="control-label"></label>
+                <select asp-for="@Model.listCarModels" class="form-control" asp-items="@Model.listCarModels"></select>
+                <span asp-validation-for="@Model.listCarModels" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.ChassisNumber" class="control-label"></label>
@@ -24,17 +60,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.EngineNumber" class="control-label"></label>
-                <input asp-for="@Model.EngineNumber" class="form-control" />
+                <input asp-for="@Model.EngineNumber"  class="form-control" />
                 <span asp-validation-for="@Model.EngineNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EnginPowerKS" class="control-label"></label>
-                <input id="ks-id" asp-for="EnginPowerKS" class="form-control" />
+                <input id="ks-id" asp-for="@Model.EnginPowerKS" class="form-control" />
                 <span asp-validation-for="EnginPowerKS" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EnginPowerKW" class="control-label"></label>
-                <input id="kw-id" asp-for="EnginPowerKW" class="form-control" />
+                <input id="kw-id" asp-for="@Model.EnginPowerKW" class="form-control" />
                 <span asp-validation-for="EnginPowerKW" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,7 +80,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.ProductionYear" class="control-label"></label>
-                <input asp-for="@Model.ProductionYear" class="form-control" />
+                <input type="text" id="datepicker" asp-for="@Model.ProductionYear" class="form-control" />
                 <span asp-validation-for="@Model.ProductionYear" class="text-danger"></span>
             </div>
 
@@ -61,29 +97,72 @@
 
 @section Scripts {
     @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
-<script>
-    $("#ks-id").keyup(function () {
-        var ks = Number($(this).val());
-        var kw = (ks) * 0.745;
-        $("#kw-id").val(kw);
-    });
-    $("#kw-id").keyup(function () {
-        var kw = Number($(this).val());
-        var ks = (kw) * 1.341;
-        $("#ks-id").val(ks);
-    });
+    <script>
+        $("#ks-id").keyup(function () {
+            var ksWithComma = $(this).val().toString().replace(",", '.');
 
-    //var $j = jQuery.noConflict();
-    //$j(".input-group.date").datepicker({
-    //    format: "yyyy",
-    //    viewMode: "years",
-    //    minViewMode: "years"
-    //});
-    //$('.input-group.date').datepicker({format: "dd.mm.yyyy"});
+            var ks = parseFloat(ksWithComma);
+            var kw = Math.round(((ks) * 0.745) * 100) / 100;
+            var kwFormated = kw.toString().replace(".", ",");
+            $("#kw-id").val(kwFormated);
+        });
+        $("#kw-id").keyup(function () {
+            var kwWithComma = $(this).val().toString().replace(",", '.');
+            var kw = parseFloat(kwWithComma);
+            var ks = Math.round(((kw) * 1.341) * 100) / 100;
+            var ksFormated = ks.toString().replace(".", ",");
+            $("#ks-id").val(ks).toString();
+        });
 
-    //    $('#datepicker').datepicker({
-    //        uiLibrary: 'bootstrap4'
-    //});
+        //$("#datepicker").datepicker({
+        //    //format: "yyyy", // Notice the Extra space at the beginning
+        //    //viewMode: "years",
+        //    //minViewMode: "years"
+        //    minViewMode: 2,
+        //    format: 'yyyy',
+        //    changeYear: true,  changeMonth: false
+        //});
+
+
+        $(function () {
+            $("#datepicker").datepicker({
+                format: 'yyyy',
+                minViewMode: "years",
+                changeYear: true,
+                changeMonth: false,
+                autoclose: true,
+            });
+        });
+                ////});
+
+                //$(function () {
+                //    $('#datepicker').datepicker({
+                //        changeYear: true,
+                //        showButtonPanel: true,
+                //        dateFormat: 'yy',
+                //        onClose: function (dateText, inst) {
+                //            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                //            $(this).datepicker('setDate', new Date(year, 1));
+                //        }
+                //    });
+                //    $("#datepicker").focus(function () {
+                //        $(".ui-datepicker-month").hide();
+                //    });
+                //});
+
+
+
+                                    //var $j = jQuery.noConflict();
+                                    //$j(".input-group.date").datepicker({
+                                    //    format: "yyyy",
+                                    //    viewMode: "years",
+                                    //    minViewMode: "years"
+                                    //});
+                                    //$('.input-group.date').datepicker({format: "dd.mm.yyyy"});
+
+                                    //    $('#datepicker').datepicker({
+                                    //        uiLibrary: 'bootstrap4'
+                                    //});
 
     </script>
 
