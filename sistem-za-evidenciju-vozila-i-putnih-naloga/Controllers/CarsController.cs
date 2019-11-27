@@ -31,25 +31,42 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            CarsCreateUpdateVM model = carsService.prepareCarsCreateVM();
+            CarsCreateUpdateVM model = carsService.PrepareDataForCreateCars();
             return View(model);
         }
         [HttpPost]
         public IActionResult Create(CarsCreateUpdateVM model)
+
         {
-            int carId = carsService.createCar(model);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                int carId = carsService.createCar(model);
+                return RedirectToAction("Index");
+            }
+            model = carsService.PrepareDataForCreateCars();
+            return View("Create", model);
+
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             CarsCreateUpdateVM model = carsService.getCarUpdateDetails(id);
+            if(model == null)
+            {
+                Response.StatusCode = 404;
+                return View("CarNotFound", id);
+            }
             return View(model);
         }
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            int deletedId = carsService.deleteCar(id);
+            if (!carsService.deleteCar(id))
+            {
+                Response.StatusCode = 404;
+                return View("CarNotFound", id);
+            }
+
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -57,7 +74,25 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
         public IActionResult Details(int id)
         {
             CarsDetailsVM model = carsService.getCarDetails(id);
+            if(model == null)
+            {
+                Response.StatusCode = 404;
+                return View("CarNotFound", id);
+            }
             return View(model);
+        }
+        [HttpGet]
+        public IActionResult CreateCarType()
+        {
+            CarsCreateCarModelVM model = carsService.PrepareDataForCreateCarType();            
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult CreateCarType(CarsCreateCarModelVM carTypeModel)
+        {
+            bool status = carsService.CreateCarType(carTypeModel);
+            CarsCreateUpdateVM model = carsService.PrepareDataForCreateCars();
+            return RedirectToAction("Create");
         }
     }
 }

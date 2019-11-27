@@ -32,6 +32,11 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
         public IActionResult Edit(int id)
         {
             TWEditVM model = travelWarrantService.getTravelWarrantEditDetails(id);
+            if(model == null)
+            {
+                Response.StatusCode = 404;
+                return View("TravelWarrantNotFound", id);
+            }
             return View(model);
         }
         [HttpPost]
@@ -44,7 +49,11 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
             if (ModelState.IsValid)
             {
                 TravelWarrant travelWarrant = context.TravelWarrant.Find(model.TravelWarrantId);
-
+                if (travelWarrant == null)
+                {
+                    Response.StatusCode = 404;
+                    return View("TravelWarrantNotFound", model.TravelWarrantId);
+                }
                 if (model.Status.ToString() == "Recorded" &&
                     travelWarrant.Status.ToString() == "Confirmed")
                 {
@@ -76,7 +85,11 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
         [HttpPost]
         public IActionResult Create(TWCreateVM model)
         {
-            int travelWarrantId = travelWarrantService.createTravelWarrant(model);
+            if (!travelWarrantService.createTravelWarrant(model)) {
+                TempData["message"] = "Nalog se ne moze kreirati zbog toga sto je automobil vec rezervisan";
+
+                return RedirectToAction("Create", model);
+            };
             return RedirectToAction("Index");
         }
         [HttpGet]
