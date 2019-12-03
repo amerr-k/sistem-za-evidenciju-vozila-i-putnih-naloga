@@ -42,7 +42,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
         [HttpPost]
         public IActionResult Edit(TWEditVM model)
         {
-
+            
             //if (!travelWarrantService.editTravelWarrant(model))
             //    return View(model);
             //return RedirectToAction("Index");

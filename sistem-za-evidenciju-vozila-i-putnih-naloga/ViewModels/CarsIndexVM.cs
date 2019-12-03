@@ -8,6 +8,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels
 {
     public class CarsIndexVM
     {
+        [DisplayName("#")]
         public int CarId { get; set; }
         [DisplayName("Model")]
         public string CarModel { get; set; }
