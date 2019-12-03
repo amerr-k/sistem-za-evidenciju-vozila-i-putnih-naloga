@@ -27,10 +27,12 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
 
         public IActionResult Index(int? page, string sortOrder)
         {
-            //ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "name";
             ViewData["IdSortParm"] = (String.IsNullOrEmpty(sortOrder) || sortOrder == "idSort") ? "idSort_desc" : "idSort";
             ViewData["CarModelSortParm"] = sortOrder == "carModel" ? "carModel_desc" : "carModel";
-            ViewData["EngineKSSortParm"] = sortOrder == "enginePowerKs" ? "enginePowerKs_desc" : "enginePowerKs";
+            ViewData["EngineKSSortParm"] = sortOrder == "engineKs" ? "engineKs_desc" : "engineKs";
+            ViewData["EngineKWSortParm"] = sortOrder == "engineKw" ? "engineKw_desc" : "engineKw";
+            ViewData["FuelSortParm"] = sortOrder == "fuel" ? "fuel_desc" : "fuel";
+            ViewData["YearSortParm"] = sortOrder == "year" ? "year_desc" : "year";
             ViewData["PageParam"] = page ?? 1;
 
             IPagedList<CarsIndexVM> model = carsService.getAllCars(page, sortOrder);

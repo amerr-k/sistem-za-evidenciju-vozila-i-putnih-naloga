@@ -10,6 +10,8 @@
     
 }
 
+
+
 <p>
     <a asp-action="Create" asp-controller="Cars">Create New</a>
 </p>
@@ -21,26 +23,22 @@
                 <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["IdSortParm"]">@Html.DisplayNameFor(model => model.First().CarId)</a>
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.First().CarModel)*@
                 <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["CarModelSortParm"]">@Html.DisplayNameFor(model => model.First().CarModel)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().ChassisNumber)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.First().EngineNumber)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.First().EnginPowerKS)
+                <a href="#">@Html.DisplayNameFor(model => model.First().ChassisNumber)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().EnginPowerKW)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["EngineKSSortParm"]">@Html.DisplayNameFor(model => model.First().EnginPowerKS)</a>         
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().Fuel)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["EngineKWSortParm"]">@Html.DisplayNameFor(model => model.First().EnginPowerKW)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().ProductionYear)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["FuelSortParm"]">@Html.DisplayNameFor(model => model.First().Fuel)</a>                   
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["YearSortParm"]">@Html.DisplayNameFor(model => model.First().ProductionYear)</a>
             </th>
             <th></th>
         </tr>
