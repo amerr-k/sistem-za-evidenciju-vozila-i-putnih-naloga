@@ -104,14 +104,14 @@
             var ks = parseFloat(ksWithComma);
             var kw = Math.round(((ks) * 0.745) * 100) / 100;
             var kwFormated = kw.toString().replace(".", ",");
-            $("#kw-id").val(kwFormated);
+            $("#kw-id").val(kwFormated).toString();
         });
         $("#kw-id").keyup(function () {
             var kwWithComma = $(this).val().toString().replace(",", '.');
             var kw = parseFloat(kwWithComma);
             var ks = Math.round(((kw) * 1.341) * 100) / 100;
             var ksFormated = ks.toString().replace(".", ",");
-            $("#ks-id").val(ks).toString();
+            $("#ks-id").val(ksFormated).toString();
         });
 
         //$("#datepicker").datepicker({
