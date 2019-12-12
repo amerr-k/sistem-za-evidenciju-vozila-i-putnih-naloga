@@ -9,6 +9,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels
 {
     public class TWIndexVM
     {
+        [DisplayName("#")]
         public int TravelWarrantId { get; set; }
 
         [DisplayName("Automobil")]

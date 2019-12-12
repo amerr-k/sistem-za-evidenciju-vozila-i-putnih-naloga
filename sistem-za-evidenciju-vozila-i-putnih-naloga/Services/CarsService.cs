@@ -4,9 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels;
+using X.PagedList;
 
 namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
 {
@@ -68,9 +70,9 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
             return true;
         }
 
-        public List<CarsIndexVM> getAllCars()
+        public IPagedList<CarsIndexVM> getAllCars(int? pageNumber, string sortOrder)
         {
-            List<CarsIndexVM> listModel = context.Car.Select(x => new CarsIndexVM
+            IQueryable<CarsIndexVM> listQueryable = context.Car.Select(x => new CarsIndexVM
             {
                 CarId = x.CarId,
                 CarModel = x.CarModel.CarBrand.Name + " " + x.CarModel.Name,
@@ -78,12 +80,56 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
                 EngineNumber = x.EngineNumber,
                 EnginPowerKS = x.EnginPowerKS.ToString(),
                 EnginPowerKW = x.EnginPowerKW.ToString(),
-                Fuel = x.Fuel.ToString(),
+                Fuel = x.Fuel,
                 ProductionYear = x.ProductionYear
-            }).ToList();
-            return listModel;
+            });
+            IQueryable<CarsIndexVM> orderedListQueryable;
+            switch (sortOrder)
+            {
+                case "idSort_desc":
+                    orderedListQueryable = listQueryable.OrderByDescending(s => s.CarId);
+                    break;
+                case "idSort":
+                    orderedListQueryable = listQueryable.OrderBy(s => s.CarId);
+                    break;
+                case "carModel":
+                    orderedListQueryable = listQueryable.OrderBy(s => s.CarModel);
+                    break;
+                case "carModel_desc":
+                    orderedListQueryable = listQueryable.OrderByDescending(s => s.CarModel);
+                    break;
+                case "engineKs":
+                    orderedListQueryable = listQueryable.OrderBy(s => s.EnginPowerKS);
+                    break;
+                case "engineKs_desc":
+                    orderedListQueryable = listQueryable.OrderByDescending(s => s.EnginPowerKS);
+                    break;
+                case "engineKw":
+                    orderedListQueryable = listQueryable.OrderBy(s => s.EnginPowerKW);
+                    break;
+                case "engineKw_desc":
+                    orderedListQueryable = listQueryable.OrderByDescending(s => s.EnginPowerKW);
+                    break;
+                case "fuel":
+                    orderedListQueryable = listQueryable.OrderBy(s => s.Fuel);
+                    break;
+                case "fuel_desc":
+                    orderedListQueryable = listQueryable.OrderByDescending(s => s.Fuel);
+                    break;
+                case "year":
+                    orderedListQueryable = listQueryable.OrderBy(s => s.ProductionYear);
+                    break;
+                case "year_desc":
+                    orderedListQueryable = listQueryable.OrderByDescending(s => s.ProductionYear);
+                    break;
+                default:
+                    orderedListQueryable = listQueryable.OrderBy(s => s.CarId);
+                    break;
+            }
+            IPagedList<CarsIndexVM> pageModel = orderedListQueryable.ToPagedList(pageNumber ?? 1, 6);
+            return pageModel;
         }
-
+        //ToPagedList(pageNumber ?? 1, 3);
         public CarsDetailsVM getCarDetails(int id)
         {
             CarsDetailsVM model = context.Car.Where(x => x.CarId == id)

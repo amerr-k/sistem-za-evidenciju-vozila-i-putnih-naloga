@@ -1,31 +1,33 @@
-﻿@model IEnumerable<sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels.TWIndexVM>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList;
+@using X.PagedList.Mvc.Common
+
+@model IPagedList<sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels.TWIndexVM>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table id="travel-warrant-table-id"class="table">
+<table id="travel-warrant-table-id" class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TravelWarrantId)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["IdSortParm"]">@Html.DisplayNameFor(model => model.First().TravelWarrantId)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["CarSortParm"]">@Html.DisplayNameFor(model => model.First().Car)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartEndTime)
+                <a href="#">@Html.DisplayNameFor(model => model.First().StartEndTime)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartEndLocation)
+                <a href="#">@Html.DisplayNameFor(model => model.First().StartEndLocation)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["StatusSortParm"]">@Html.DisplayNameFor(model => model.First().Status)</a>
             </th>
             <th></th>
         </tr>
@@ -56,15 +58,23 @@
         }
     </tbody>
 </table>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+   new PagedListRenderOptionsBase
+   {
+       LiElementClasses = new string[] { "page-item" },
+       PageClasses = new string[] { "page-link" }
+   })
+
+
 @section Scripts {
     @*<script>
-        $(document).ready(function () {
-            $('#travel-warrant-table-id').DataTable({
-                dom: 'Bfrtip',
-                buttons: [],
-                "searching": false,
-                "paging": false,
+            $(document).ready(function () {
+                $('#travel-warrant-table-id').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    "searching": false,
+                    "paging": false,
 
-            });
-    </script>*@
+                });
+        </script>*@
 }

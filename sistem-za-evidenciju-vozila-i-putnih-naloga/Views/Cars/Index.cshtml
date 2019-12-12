@@ -1,37 +1,44 @@
-﻿@model IEnumerable<sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels.CarsIndexVM>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList;
+@using X.PagedList.Mvc.Common
+
+
+@model IPagedList<sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels.CarsIndexVM>
 
 @{
     ViewData["Title"] = "Index";
+    
 }
 
-<h1>Index</h1>
+
 
 <p>
     <a asp-action="Create" asp-controller="Cars">Create New</a>
 </p>
 <table id="car-table-id" class="table table-bordered">
+    
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CarModel)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["IdSortParm"]">@Html.DisplayNameFor(model => model.First().CarId)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChassisNumber)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["CarModelSortParm"]">@Html.DisplayNameFor(model => model.First().CarModel)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EngineNumber)
+                <a href="#">@Html.DisplayNameFor(model => model.First().ChassisNumber)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EnginPowerKS)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["EngineKSSortParm"]">@Html.DisplayNameFor(model => model.First().EnginPowerKS)</a>         
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EnginPowerKW)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["EngineKWSortParm"]">@Html.DisplayNameFor(model => model.First().EnginPowerKW)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fuel)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["FuelSortParm"]">@Html.DisplayNameFor(model => model.First().Fuel)</a>                   
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductionYear)
+                <a asp-action="Index" asp-route-page="@ViewData["PageParam"]" asp-route-sortOrder="@ViewData["YearSortParm"]">@Html.DisplayNameFor(model => model.First().ProductionYear)</a>
             </th>
             <th></th>
         </tr>
@@ -39,52 +46,67 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CarModel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ChassisNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EngineNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EnginPowerKS)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EnginPowerKW)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fuel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductionYear)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.CarId)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarModel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChassisNumber)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.EngineNumber)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.EnginPowerKS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnginPowerKW)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fuel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionYear)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
-@section Scripts{
+
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+   new PagedListRenderOptionsBase
+   {
+       LiElementClasses = new string[] { "page-item" },
+       PageClasses = new string[] { "page-link" }
+   })
+
+
+
+
+@*@section Scripts{
     <script>
 
-            //$(document).ready(function () {
-            //    $('#car-table-id').DataTable({
-            //        dom: 'Bfrtip',
-            //        buttons: [],
-            //        "searching": false,
-            //        "paging": false,
-                    
-            //    });
-                //$.extend($.fn.dataTable.defaults, {
-                //    searching: false,
-                //    ordering: false
-                //});
-            //})
+        $(document).ready(function () {
+            $('#car-table-id').DataTable({
+                dom: 'Bfrtip',
+                buttons: [],
+                "searching": false,
+                "paging": false,
+
+            });
+            $.extend($.fn.dataTable.defaults, {
+                searching: false,
+                ordering: false
+            });
+        })
     </script>
-}
+}*@

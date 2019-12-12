@@ -9,6 +9,7 @@ using sistem_za_evidenciju_vozila_i_putnih_naloga.Data;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Services;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels;
+using X.PagedList;
 
 namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
 {
@@ -23,9 +24,16 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
             this.context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page, string sortOrder)
         {
-            List<TWIndexVM> model = travelWarrantService.getAllTravelWarrants();
+            ViewData["IdSortParm"] = (String.IsNullOrEmpty(sortOrder) || sortOrder == "idSort") ? "idSort_desc" : "idSort";
+            ViewData["CarSortParm"] = sortOrder == "car" ? "car_desc" : "car";
+            //ViewData["StartTimeSortParm"] = sortOrder == "startTime" ? "startTime_desc" : "startTime";
+            //ViewData["EndTimeSortParm"] = sortOrder == "endTime" ? "endTime_desc" : "endTime";
+            ViewData["StatusSortParm"] = sortOrder == "status" ? "status_desc" : "status";
+            ViewData["PageParam"] = page ?? 1;
+
+            IPagedList<TWIndexVM> model = travelWarrantService.getAllTravelWarrants(page, sortOrder);
             return View(model);
         }
         
@@ -42,7 +50,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
         [HttpPost]
         public IActionResult Edit(TWEditVM model)
         {
-
+            
             //if (!travelWarrantService.editTravelWarrant(model))
             //    return View(model);
             //return RedirectToAction("Index");

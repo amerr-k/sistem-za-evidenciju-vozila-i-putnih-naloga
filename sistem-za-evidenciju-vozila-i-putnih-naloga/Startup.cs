@@ -38,6 +38,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga
             //services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddControllersWithViews();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

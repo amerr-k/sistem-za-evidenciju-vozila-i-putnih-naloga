@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels;
+using X.PagedList;
 
 namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
 {
@@ -91,9 +92,47 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
             return true;
         }
 
-        public List<TWIndexVM> getAllTravelWarrants()
+        public IPagedList<TWIndexVM> getAllTravelWarrants(int? pageNumber, string sortOrder)
         {
-            List<TWIndexVM> listModels = context.TravelWarrant.Select(x => new TWIndexVM
+            IQueryable<TravelWarrant> orderedListQueryable;
+            switch (sortOrder)
+            {
+                case "idSort_desc":
+                    orderedListQueryable = context.TravelWarrant.OrderByDescending(s => s.TravelWarrantId);
+                    break;
+                case "idSort":
+                    orderedListQueryable = context.TravelWarrant.OrderBy(s => s.TravelWarrantId);
+                    break;
+                case "car":
+                    orderedListQueryable = context.TravelWarrant.OrderBy(s => s.Car);
+                    break;
+                case "car_desc":
+                    orderedListQueryable = context.TravelWarrant.OrderByDescending(s => s.Car);
+                    break;
+                case "startTime":
+                    orderedListQueryable = context.TravelWarrant.OrderBy(s => s.StartTime);
+                    break;
+                case "startTime_desc":
+                    orderedListQueryable = context.TravelWarrant.OrderByDescending(s => s.StartTime);
+                    break;
+                case "endTime":
+                    orderedListQueryable = context.TravelWarrant.OrderBy(s => s.EndTime);
+                    break;
+                case "endTime_desc":
+                    orderedListQueryable = context.TravelWarrant.OrderByDescending(s => s.EndTime);
+                    break;
+                case "status":
+                    orderedListQueryable = context.TravelWarrant.OrderBy(s => s.Status);
+                    break;
+                case "status_desc":
+                    orderedListQueryable = context.TravelWarrant.OrderByDescending(s => s.Status);
+                    break;
+                default:
+                    orderedListQueryable = context.TravelWarrant.OrderBy(s => s.TravelWarrantId);
+                    break;
+            }
+
+            List<TWIndexVM> listModels = orderedListQueryable.Select(x => new TWIndexVM
             {
                 TravelWarrantId = x.TravelWarrantId,
                 StartEndLocation = x.StartLocation + " - " + x.EndLocation,
@@ -106,7 +145,10 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
                                x.EndTime.ToShortTimeString(),
                 Status = x.Status.ToString()
             }).ToList();
-            return listModels;
+
+            IPagedList<TWIndexVM> pageModel = listModels.ToPagedList(pageNumber ?? 1, 6);
+
+            return pageModel;
         }
 
         public TWDetailsVM getTravelWarrantDetails(int travelWarrantId)

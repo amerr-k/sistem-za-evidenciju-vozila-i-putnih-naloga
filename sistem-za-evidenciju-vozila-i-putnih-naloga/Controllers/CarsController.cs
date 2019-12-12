@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+//using PagedList.Core;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.Services;
 using sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels;
+using X.PagedList;
 
 namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
 {
@@ -23,9 +25,17 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Controllers
         }
         [HttpGet]
 
-        public IActionResult Index()
+        public IActionResult Index(int? page, string sortOrder)
         {
-            List<CarsIndexVM> model = carsService.getAllCars();
+            ViewData["IdSortParm"] = (String.IsNullOrEmpty(sortOrder) || sortOrder == "idSort") ? "idSort_desc" : "idSort";
+            ViewData["CarModelSortParm"] = sortOrder == "carModel" ? "carModel_desc" : "carModel";
+            ViewData["EngineKSSortParm"] = sortOrder == "engineKs" ? "engineKs_desc" : "engineKs";
+            ViewData["EngineKWSortParm"] = sortOrder == "engineKw" ? "engineKw_desc" : "engineKw";
+            ViewData["FuelSortParm"] = sortOrder == "fuel" ? "fuel_desc" : "fuel";
+            ViewData["YearSortParm"] = sortOrder == "year" ? "year_desc" : "year";
+            ViewData["PageParam"] = page ?? 1;
+
+            IPagedList<CarsIndexVM> model = carsService.getAllCars(page, sortOrder);
             return View(model);
         }
         [HttpGet]

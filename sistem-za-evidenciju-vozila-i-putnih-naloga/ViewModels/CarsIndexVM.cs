@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sistem_za_evidenciju_vozila_i_putnih_naloga.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels
 {
     public class CarsIndexVM
     {
+        [DisplayName("#")]
         public int CarId { get; set; }
         [DisplayName("Model")]
         public string CarModel { get; set; }
@@ -25,7 +27,7 @@ namespace sistem_za_evidenciju_vozila_i_putnih_naloga.ViewModels
         public string EnginPowerKW { get; set; }
 
         [DisplayName("Gorivo")]
-        public string Fuel { get; set; }
+        public Fuel Fuel { get; set; }
 
         [DisplayName("Godina proizvodnje")]
         public int? ProductionYear { get; set; }

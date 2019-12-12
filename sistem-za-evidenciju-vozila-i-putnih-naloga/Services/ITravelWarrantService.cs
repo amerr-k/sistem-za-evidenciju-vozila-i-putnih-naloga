@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace sistem_za_evidenciju_vozila_i_putnih_naloga.Services
 {
     public interface ITravelWarrantService
     {
-        List<TWIndexVM> getAllTravelWarrants();
+        IPagedList<TWIndexVM> getAllTravelWarrants(int? pageNumber, string sortOrder);
         TWCreateVM prepareTWCreateVM();
         bool createTravelWarrant(TWCreateVM model);
         int deleteTravelWarrant(int travelWarrantId);
